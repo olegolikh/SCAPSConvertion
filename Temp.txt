@@ -1,0 +1,32 @@
+ Directory0:= GetCurrentDir;
+
+
+ ConfigFile:=TIniFile.Create(Directory0+'\Shottky.ini');
+ Directory:=ConfigFile.ReadString('Direct','Dir',GetCurrentDir);
+ CurDirectory:=ConfigFile.ReadString('Direct','CDir',Directory);
+
+ ConfigFile.WriteString('Direct','Dir',Directory);
+ ConfigFile.WriteString('Direct','CDir',CurDirectory);
+
+
+   Try    ChDir(Directory);
+          OpenDialog1.InitialDir:=Directory;
+   Except ChDir(Directory0);
+          OpenDialog1.InitialDir:=Directory0;
+
+
+ if not(SetCurrentDir(CurDirectory)) then
+   begin
+   MessageDlg('Current directory is not exist', mtError,[mbOk],0);
+   Exit;
+   end;
+
+
+procedure TForm1.ButtonCurDirClick(Sender: TObject);
+var st:string;
+begin
+st:=CurDirectory;
+SelectDirectory('Chose Directory','C:', CurDirectory);
+ChooseDirect(Form1);
+Directory:=CurDirectory;
+end;
